@@ -1,107 +1,118 @@
-:root {
-  --max-width: 1100px;
-  --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-
-  --primary-glow: conic-gradient(
-    from 180deg at 50% 50%,
-    #16abff33 0deg,
-    #0885ff33 55deg,
-    #54d6ff33 120deg,
-    #0071ff33 160deg,
-    transparent 360deg
-  );
-  --secondary-glow: radial-gradient(
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 0)
-  );
-
-  --tile-start-rgb: 239, 245, 249;
-  --tile-end-rgb: 228, 232, 233;
-  --tile-border: conic-gradient(
-    #00000080,
-    #00000040,
-    #00000030,
-    #00000020,
-    #00000010,
-    #00000010,
-    #00000080
-  );
-
-  --callout-rgb: 238, 240, 241;
-  --callout-border-rgb: 172, 175, 176;
-  --card-rgb: 180, 185, 188;
-  --card-border-rgb: 131, 134, 135;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-
-    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
-    --secondary-glow: linear-gradient(
-      to bottom right,
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0.3)
-    );
-
-    --tile-start-rgb: 2, 13, 46;
-    --tile-end-rgb: 2, 5, 19;
-    --tile-border: conic-gradient(
-      #ffffff80,
-      #ffffff40,
-      #ffffff30,
-      #ffffff20,
-      #ffffff10,
-      #ffffff10,
-      #ffffff80
-    );
-
-    --callout-rgb: 20, 20, 20;
-    --callout-border-rgb: 108, 108, 108;
-    --card-rgb: 100, 100, 100;
-    --card-border-rgb: 200, 200, 200;
-  }
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    font-family: Arial;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-size: 7.5vmin;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+#gameboard {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-size), var(--cell-size));
+    grid-template-rows: repeat(var(--grid-size), var(--cell-size));
+    background-color: #ccc;
+    gap: var(--cell-gap);
+    border-radius: 1vmin;
+    padding: var(--cell-gap);
+    position: relative;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.cell {
+    background-color: #aaa;
+    border-radius: 1vmin;
+}
+
+.tile {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--cell-size);
+    height: var(--cell-size);
+    background-color: red;
+    border-radius: 1vmin;
+    top: calc(
+        var(--y) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap)
+    );
+    left: calc(
+        var(--x) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap)
+    );
+    font-weight: bold;
+    background-color: hsl(200, 50%, var(--background-lightness));
+    color: hsl(200, 25%, var(--text-lightness));
+    animation: show 200ms ease-in-out;
+    transition: 100ms ease-in-out;
+}
+
+#scoreboard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2vmin;
+}
+
+#title {
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 0.5vmin #000;
+}
+
+#scoreboard .scoring {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#scoreboard .scoring p {
+    font-size: 2vmin;
+    margin: 0;
+    color: #aaaaaa;
+}
+
+#score {
+    font-size: 3vmin;
+    margin: 0;
+    color: #cccccc;
+    font-weight: bold;
+}
+
+#score-show {
+    position: relative;
+}
+
+.score-animate {
+    position: absolute;
+    left: 4vmin;
+    color: #cccccc;
+    font-size: 1.5vmin;
+    animation: score 200ms ease-in-out;
+}
+
+@keyframes score {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.25;
+    }
+    100% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes show {
+    0% {
+        opacity: 0.5;
+        transform: scale(0);
+    }
 }
